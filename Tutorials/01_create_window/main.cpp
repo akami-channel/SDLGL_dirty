@@ -36,7 +36,14 @@ int main(int argc, char **argv)
 
     SDL_GLContext mainContext = SDL_GL_CreateContext(window);
 
-    gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
+    #ifndef __APPLE__
+        // If Windows or Linux: load all OpenGL function pointers with GLAD
+        if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+        {
+            printf("Failed to initialize GLAD");
+            return -1;
+        }
+    #endif
 
     SDL_Event event;
     int running = 1;
