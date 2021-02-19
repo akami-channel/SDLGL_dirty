@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 		}
 		glClearColor(1.0f, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
-        glUniform1f(glGetUniformLocation(shaderProgram, "transX"), cos(currentTime));
+        // glUniform1f(glGetUniformLocation(shaderProgram, "transX"), cos(currentTime));
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		SDL_GL_SwapWindow(window);
     }
