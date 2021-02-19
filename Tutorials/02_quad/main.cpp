@@ -89,8 +89,8 @@ int main(int argc, char **argv)
 
     printf("%s\n", glGetString(GL_VERSION));
 
+    glDeleteProgram(shaderProgram);
     SDL_DestroyWindow(window);
-
     SDL_Quit();
 
     return 0;

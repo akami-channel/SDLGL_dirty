@@ -22,6 +22,8 @@
 
 GLuint getTextureHandle(char* path);
 
+float currentTime, deltaTime, lastFrame;
+
 int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -72,8 +74,28 @@ int main(int argc, char **argv)
     // for alpha (opacity)
     glEnable (GL_BLEND); glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    Uint64 NOW = SDL_GetPerformanceCounter();
+    Uint64 LAST = 0;
+    double deltaTime = 0;
+
     while(running)
     {
+
+
+        SDL_ShowCursor(SDL_DISABLE);
+
+        LAST = NOW;
+        NOW = SDL_GetPerformanceCounter();
+
+        // currentTime = NOW;
+        // deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() );
+
+        // // need how to get time in sdl
+        currentTime = SDL_GetTicks() / 1000.0;
+        // printf("currentTime: %f\n", currentTime);
+        deltaTime = currentTime - lastFrame;
+        lastFrame = currentTime;
+
 		while(SDL_PollEvent(&event))
 		{
 		    if (event.type == SDL_QUIT)
@@ -83,11 +105,12 @@ int main(int argc, char **argv)
 		}
 		glClearColor(1.0f, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
+        glUniform1f(glGetUniformLocation(shaderProgram, "transX"), cos(currentTime));
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		SDL_GL_SwapWindow(window);
     }
 
-    
+    glDeleteProgram(shaderProgram);
 
     SDL_DestroyWindow(window);
 
