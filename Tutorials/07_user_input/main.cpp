@@ -24,6 +24,9 @@ GLuint getTextureHandle(char* path);
 
 float currentTime, deltaTime, lastFrame;
 
+#define TRUE 1
+#define FALSE 0
+
 int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -60,6 +63,7 @@ int main(int argc, char **argv)
 
     SDL_Event event;
     int running = 1;
+    int quit = FALSE;
 
 	GLuint shaderProgram = glCreateProgram();
     shaderProgram = buildShaders(shaderProgram, "shaders/quad.vs", "shaders/quad.fs");
@@ -78,7 +82,7 @@ int main(int argc, char **argv)
     Uint64 LAST = 0;
     double deltaTime = 0;
 
-    while(running)
+    while(!quit)
     {
 
 
@@ -98,10 +102,18 @@ int main(int argc, char **argv)
 
 		while(SDL_PollEvent(&event))
 		{
-		    if (event.type == SDL_QUIT)
-		    {
-			running = 0;
-		    }
+		 //    if (event.type == SDL_QUIT)
+		 //    {
+			// running = 0;
+		 //    }
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+                case SDL_KEYDOWN:
+                    glUniform1f(glGetUniformLocation(shaderProgram, "transX"), cos(currentTime));
+            }
 		}
 		glClearColor(1.0f, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
