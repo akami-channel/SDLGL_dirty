@@ -4,7 +4,6 @@
 
 #include "../../Libraries/SDL2-devel-2.0.12-mingw/SDL2-devel-2.0/SDL2-2.0.12/x86_64-w64-mingw32/include/SDL2/SDL.h"
 #include "../../Libraries/glad/glad.h"
-// #include "screen_setup.hpp"
 
 // MACOS
 
@@ -21,16 +20,16 @@ void setupVertexArray();
 unsigned int VAO;
 
 const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
+    "layout (location = 0) in vec3 pos;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);\n"
     "}\0";
 const char *fragmentShaderSource = "#version 330 core\n"
     "out vec4 FragColor;\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "   FragColor = vec4(0.0f, 0.0f, 1.0f, 1.0f);\n"
     "}\n\0";
 
 
@@ -42,8 +41,8 @@ int main(int argc, char **argv)
 		"SDL + OpenGL Tutorial",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		1366,
-		768,
+		1280,
+		720,
 		SDL_WINDOW_OPENGL
 	);
 
@@ -66,6 +65,13 @@ int main(int argc, char **argv)
     SDL_Event event;
     int running = 1;
 
+	int shaderProgram = glCreateProgram();
+    buildShaders(shaderProgram);
+    setupVertexArray();
+
+    glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+    glUseProgram(shaderProgram);
+
     while(running)
     {
 		while(SDL_PollEvent(&event))
@@ -77,6 +83,7 @@ int main(int argc, char **argv)
 		}
 		glClearColor(1.0f, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		SDL_GL_SwapWindow(window);
     }
 
