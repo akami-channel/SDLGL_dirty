@@ -24,9 +24,6 @@ GLuint getTextureHandle(char* path);
 
 float currentTime, deltaTime, lastFrame;
 
-#define TRUE 1
-#define FALSE 0
-
 int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -63,7 +60,7 @@ int main(int argc, char **argv)
 
     SDL_Event event;
     int running = 1;
-    int quit = FALSE;
+    int quit = false;
 
 	GLuint shaderProgram = glCreateProgram();
     shaderProgram = buildShaders(shaderProgram, "shaders/quad.vs", "shaders/quad.fs");
