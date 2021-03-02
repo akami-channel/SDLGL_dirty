@@ -100,21 +100,28 @@ int main(int argc, char **argv)
         deltaTime = currentTime - lastFrame;
         lastFrame = currentTime;
 
-		while(SDL_PollEvent(&event))
-		{
-		 //    if (event.type == SDL_QUIT)
-		 //    {
-			// running = 0;
-		 //    }
-            switch (event.type)
-            {
+        while(SDL_PollEvent(&event))
+        {
+            switch(event.type) {
                 case SDL_QUIT:
                     quit = true;
                     break;
+                case SDL_MOUSEMOTION:
+                    //....
+                    break;
                 case SDL_KEYDOWN:
-                    glUniform1f(glGetUniformLocation(shaderProgram, "transX"), cos(currentTime));
+                    switch(event.key.keysym.sym) {
+                        case SDLK_ESCAPE: 
+                            quit = true;
+                            break;
+                        case SDLK_DOWN:
+                            glUniform1f(glGetUniformLocation(shaderProgram, "transX"), cos(currentTime));
+                    }
+                    break;
+                // cases for other events
             }
-		}
+
+        }
 		glClearColor(1.0f, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
         // glUniform1f(glGetUniformLocation(shaderProgram, "transX"), cos(currentTime));
